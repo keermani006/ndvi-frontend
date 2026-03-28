@@ -4,6 +4,8 @@ import UploadPanel from './components/UploadPanel'
 import HeatmapPanel from './components/HeatmapPanel'
 import StatsPanel from './components/StatsPanel'
 
+const BASE_URL = "https://ndvi-backend-nxfz.onrender.com";
+
 function App() {
   const [ndviData, setNdviData] = useState(null)
   const [stats, setStats] = useState(null)
@@ -19,7 +21,7 @@ function App() {
     const format = file.name.endsWith('.json') ? 'json' : 'csv'
 
     try {
-      const response = await fetch(`/upload?format=${format}`, {
+      const response = await fetch(`${BASE_URL}/upload?format=${format}`, {
         method: 'POST',
         body: file,
         headers: {
@@ -47,7 +49,7 @@ function App() {
 
     try {
       // Fetch NDVI data (lazily computed on backend)
-      const ndviResponse = await fetch('/ndvi')
+      const ndviResponse = await fetch(`${BASE_URL}/ndvi`)
       if (!ndviResponse.ok) {
         const errData = await ndviResponse.json()
         throw new Error(errData.error || 'NDVI computation failed')
@@ -56,7 +58,7 @@ function App() {
       setNdviData(ndviResult.ndvi)
 
       // Fetch stats (lazily computed via single fold on backend)
-      const statsResponse = await fetch('/stats')
+      const statsResponse = await fetch(`${BASE_URL}/stats`)
       if (!statsResponse.ok) {
         const errData = await statsResponse.json()
         throw new Error(errData.error || 'Stats computation failed')
