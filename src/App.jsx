@@ -22,12 +22,9 @@ function App() {
 
     try {
       const response = await fetch(`${BASE_URL}/upload?format=${format}`, {
-        method: 'POST',
-        body: file,
-        headers: {
-          'Content-Type': 'application/octet-stream',
-        },
-      })
+      method: 'POST',
+      body: file
+    })
 
       if (!response.ok) {
         throw new Error('Upload failed')
